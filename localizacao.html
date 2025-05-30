@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pet Pass - Enviar Localização</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+    .box {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      background-color: #fff;
+      display: inline-block;
+    }
+    h1 {
+      color: #1e88e5;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>📍 Enviando localização...</h1>
+    <p>Aguarde um instante. Seu celular pode pedir permissão para acessar sua localização.</p>
+  </div>
+
+  <script>
+    // Captura o número da URL
+    const params = new URLSearchParams(window.location.search);
+    const numero = params.get("numero");
+
+    if (!numero) {
+      alert("Número de telefone não encontrado.");
+    } else {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        const msg = `Olá! Encontrei seu pet aqui: https://maps.google.com/?q=${lat},${lng}`;
+        const link = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+        window.location.href = link;
+      }, function(error) {
+        alert("Não foi possível obter sua localização.");
+      });
+    }
+  </script>
+</body>
+</html>
+
+
